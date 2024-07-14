@@ -13,7 +13,7 @@ export default function EmailOTPPage() {
   const [verifiedEmail, setVerifiedEmail] = useState('');
 
   useEffect(() => {
-    emailjs.init('2AcWtLRKo7fXa-Ys8');
+    emailjs.init(process.env.NEXT_PUBLIC_EMAILJSINIT);
   }, []);
 
   const validateEmail = (email) => {
@@ -37,7 +37,7 @@ export default function EmailOTPPage() {
         reply_to: email,
       };
 
-      emailjs.send('service_9rbppf1', 'template_oyk2ieq', templateParams)
+      emailjs.send(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_KEY, process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_KEY, templateParams)
         .then((response) => {
           console.log('SUCCESS!', response.status, response.text);
           setStep(2);
