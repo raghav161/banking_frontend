@@ -33,7 +33,7 @@ export default function EmailOTPPage() {
       const templateParams = {
         from_name: 'Bank official',
         OTP: otp,
-        message: "Please don't share this otp with anyone",
+        message: "Please don&apos;t share this otp with anyone",
         reply_to: email,
       };
 
@@ -107,7 +107,7 @@ export default function EmailOTPPage() {
             />
           </div>
           <p className="text-center mb-6 text-white">
-            Not your email or didn't receive the OTP? 
+            Not your email or didn&apos;t receive the OTP? 
             <a href="#" onClick={() => setStep(1)} className="text-white"> Try again</a>
           </p>
           <div className='flex justify-center'>

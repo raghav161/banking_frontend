@@ -105,7 +105,7 @@ const Useridpass = () => {
             <FormDescription className='text-bold text-3xl flex justify-center mb-8'>
                 Create your login details
                 <br/>
-                Keep your details safe-you'll need them later
+                Keep your details safe-you&apos;ll need them later
             </FormDescription>
             <hr className="mb-8" />
             <FormField 
@@ -163,7 +163,7 @@ const Useridpass = () => {
                             <br/>
                             Contain at least 1 number and 1 UPPER case letter.
                             <br/>
-                            Shouldn't contain any sequences or repeated characters
+                            Shouldn&apos;t contain any sequences or repeated characters
                             <br/>such as 1234, 3333, ZZZZ, etc.
                         </FormDescription>
                     </div>
