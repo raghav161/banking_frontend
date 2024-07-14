@@ -1,3 +1,4 @@
+"use client"
 import { BsFillShieldLockFill } from 'react-icons/bs';
 import { CgSpinner } from 'react-icons/cg';
 import OtpInput from 'otp-input-react';
