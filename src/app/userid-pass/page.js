@@ -1,9 +1,9 @@
 "use client"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,8 +12,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import axios from 'axios';
 
 const formSchema = z.object({
@@ -60,6 +60,11 @@ const Useridpass = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -71,20 +76,22 @@ const Useridpass = () => {
   });
 
   const onSubmit = async (data) => {
-    try {
-      const response = await axios.post('http://localhost:8000/api/application/login/loginUser', {
-        username: data.username,
-        password: data.password,
-      });
-      console.log(response.data);
-      setErrorMessage('');
-      window.alert("Form submitted successfully!");
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setErrorMessage('Username already exists. Please use a different username.');
-      } else {
-        console.error('Error signing up:', error);
-        setErrorMessage('An error occurred during sign up. Please try again.');
+    if (isClient) {
+      try {
+        const response = await axios.post('http://localhost:8000/api/application/login/loginUser', {
+          username: data.username,
+          password: data.password,
+        });
+        console.log(response.data);
+        setErrorMessage('');
+        window.alert("Form submitted successfully!");
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          setErrorMessage('Username already exists. Please use a different username.');
+        } else {
+          console.error('Error signing up:', error);
+          setErrorMessage('An error occurred during sign up. Please try again.');
+        }
       }
     }
   };
@@ -96,6 +103,10 @@ const Useridpass = () => {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword((prev) => !prev);
   };
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div className="min-h-screen bg-gray-300 flex items-center justify-center">
