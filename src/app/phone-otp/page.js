@@ -1,5 +1,3 @@
-// pages/phone-otp.js
-"use client"
 import { BsFillShieldLockFill } from 'react-icons/bs';
 import { CgSpinner } from 'react-icons/cg';
 import OtpInput from 'otp-input-react';
@@ -20,15 +18,6 @@ const PhoneOTPPage = () => {
   const [phoneNumberValid, setPhoneNumberValid] = useState(false);
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
-  const handlePhoneInputChange = (value) => {
-    if (value.length === 12) {
-      setPhoneNumberValid(true);
-    } else {
-      setPhoneNumberValid(false);
-    }
-    setPh(value);
-  };
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const verifier = new RecaptchaVerifier(auth, "recaptcha-container", {
@@ -43,6 +32,15 @@ const PhoneOTPPage = () => {
     }
   }, []);
 
+  const handlePhoneInputChange = (value) => {
+    if (value.length === 12) {
+      setPhoneNumberValid(true);
+    } else {
+      setPhoneNumberValid(false);
+    }
+    setPh(value);
+  };
+
   const onSignup = async () => {
     try {
       setLoading(true);
@@ -55,7 +53,7 @@ const PhoneOTPPage = () => {
 
       const formatPh = '+' + ph;
       const confirmationResult = await signInWithPhoneNumber(auth, formatPh, recaptchaVerifier);
-      window.confirmationResult = confirmationResult;
+      window.confirmationResult = confirmationResult; // This line needs window object
       setLoading(false);
       setShowOTP(true);
       toast.success('OTP sent successfully!');
@@ -69,7 +67,7 @@ const PhoneOTPPage = () => {
   const onOTPVerify = async () => {
     setLoading(true);
     try {
-      const result = await window.confirmationResult.confirm(otp);
+      const result = await window.confirmationResult.confirm(otp); // This line needs window object
       setUser(result.user);
       setLoading(false);
       toast.success('Signup successful!');
