@@ -1,9 +1,9 @@
 "use client"
-import { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -12,8 +12,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import axios from 'axios';
 
 const formSchema = z.object({
@@ -60,11 +60,7 @@ const Useridpass = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -76,22 +72,20 @@ const Useridpass = () => {
   });
 
   const onSubmit = async (data) => {
-    if (isClient) {
-      try {
-        const response = await axios.post('http://localhost:8000/api/application/login/loginUser', {
-          username: data.username,
-          password: data.password,
-        });
-        console.log(response.data);
-        setErrorMessage('');
-        window.alert("Form submitted successfully!");
-      } catch (error) {
-        if (error.response && error.response.status === 409) {
-          setErrorMessage('Username already exists. Please use a different username.');
-        } else {
-          console.error('Error signing up:', error);
-          setErrorMessage('An error occurred during sign up. Please try again.');
-        }
+    try {
+      const response = await axios.post('http://localhost:8000/api/application/login/loginUser', {
+        username: data.username,
+        password: data.password,
+      });
+      console.log(response.data);
+      setErrorMessage('');
+      setSuccessMessage("Form submitted successfully!");
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setErrorMessage('Username already exists. Please use a different username.');
+      } else {
+        console.error('Error signing up:', error);
+        setErrorMessage('An error occurred during sign up. Please try again.');
       }
     }
   };
@@ -104,10 +98,6 @@ const Useridpass = () => {
     setShowConfirmPassword((prev) => !prev);
   };
 
-  if (!isClient) {
-    return null; // or a loading spinner
-  }
-
   return (
     <div className="min-h-screen bg-gray-300 flex items-center justify-center">
       <div className="bg-white p-8 shadow-2xl rounded-lg w-full max-w-6xl">
@@ -116,7 +106,7 @@ const Useridpass = () => {
             <FormDescription className='text-bold text-3xl flex justify-center mb-8'>
                 Create your login details
                 <br/>
-                Keep your details safe-you&apos;ll need them later
+                Keep your details safe-you'll need them later
             </FormDescription>
             <hr className="mb-8" />
             <FormField 
@@ -174,7 +164,7 @@ const Useridpass = () => {
                             <br/>
                             Contain at least 1 number and 1 UPPER case letter.
                             <br/>
-                            Shouldn&apos;t contain any sequences or repeated characters
+                            Shouldn't contain any sequences or repeated characters
                             <br/>such as 1234, 3333, ZZZZ, etc.
                         </FormDescription>
                     </div>
@@ -216,6 +206,7 @@ const Useridpass = () => {
               )}
             />
             {errorMessage && <div className="text-red-600 text-center mt-4">{errorMessage}</div>}
+            {successMessage && <div className="text-green-600 text-center mt-4">{successMessage}</div>}
             <div className="flex justify-center">
                 <Button type="submit" size='lg'>Submit</Button>
             </div>
